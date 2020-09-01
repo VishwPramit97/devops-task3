@@ -1,0 +1,92 @@
+apiVersion: v1
+
+kind: Service
+
+metadata:
+
+name: web-html
+
+labels:
+
+app: web-html
+
+spec:
+
+ports:
+
+- nodePort:
+
+31000
+
+port: 80
+
+targetPort: 80
+
+selector:
+
+app: web-html NodePort
+
+type:
+
+apiVersion: v1
+
+kind: PersistentVolumeClaim
+
+metadata:
+
+name: web-pv-claim
+
+labels:
+
+app: web-html
+
+spec:
+
+accessModes:
+
+- ReadWriteOnce
+
+resources:
+
+requests:
+
+storage: 20Gi
+Kind:
+
+metadata: name: web-html
+
+labels:
+
+app: web-html
+
+spec:
+
+selector: matchLabels:
+
+app: web-html
+
+strategy type: Recreate
+
+template:
+
+metadata: labels:
+
+app: web-html
+
+spec:
+
+containers:
+
+image: httpd name: web-html
+
+ports:
+
+- container Port: name: web-html
+
+80
+
+volumeMounts:
+
+name: web-html-persistent-storage mountPath: /usr/local/apache2/htdocs/ volumes:
+
+name: web-html-persistent-storage persistentVolumeclaim: claimName: web-pv-claim
