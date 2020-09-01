@@ -1,0 +1,99 @@
+apiVersion: v1
+
+kind: Service
+
+metadata:
+
+name: web-php labels:
+
+app:
+
+web-php
+
+spec:
+
+ports:
+
+nodePort: 31000
+
+port: 80
+
+targetPort: 80
+
+selector:
+
+app: web-php type: NodePort
+
+apiVersion: v1 kind: PersistentVolumeClaim
+
+metadata: name: web-pv-claim
+
+labels:
+
+app: web-php
+
+spec:
+
+accessModes: ReadWriteOnce
+
+resources:
+
+requests:
+
+storage: 20Gi
+
+Kind: Deployment
+
+metadata
+
+name:
+
+web-php
+
+labels:
+
+app: web-php
+
+pec:
+
+selector: matchLabels:
+
+app: web-php
+
+strategy:
+
+type:
+
+Recreate
+
+template: metadata:
+
+labels:
+
+app:
+
+web-php
+
+spec:
+
+containers:
+
+- image: vimal13/apache-webserver-php
+
+name: web-php
+
+ports:
+
+- container Port: 80
+
+name: web-php
+
+volumeMounts:
+
+name: web-php-persistent-storage mountPath: /var/www/html
+
+volumes:
+
+name: web-php-persistent-storage
+
+persistentVolumeClaim: claimName: web-pv-claim
